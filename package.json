@@ -9,7 +9,8 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build",
-    "example": "npx tsx examples/basic.ts"
+    "create": "npx tsx tools/create-accounts.ts",
+    "popularity": "npx tsx tools/daily-popularity.ts"
   },
   "keywords": [
     "blockmango",
