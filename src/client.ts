@@ -45,6 +45,7 @@ const DEFAULT_HEADERS: Record<string, string> = {
   env: "prd",
   clienttype: "client",
   userlanguage: "en_US",
+  language: "en_US",
 };
 
 const DEFAULT_TIMEOUT = 15000;
@@ -55,6 +56,13 @@ export interface BlockmanGOClientOptions {
   deviceId?: string;
   deviceSignature?: string;
   language?: string;
+}
+
+export class CaptchaError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CaptchaError";
+  }
 }
 
 export class BlockmanGOClient {
@@ -108,6 +116,8 @@ export class BlockmanGOClient {
       os: "android",
       "user-agent": "okhttp/4.12.0",
       ...DEFAULT_HEADERS,
+      language: this.language,
+      userlanguage: this.language,
       ...signed,
       ...extra,
     };
@@ -148,6 +158,10 @@ export class BlockmanGOClient {
       }
 
       const data = (await response.json()) as APIResponse<T>;
+
+      if (data.code === 140) {
+        throw new CaptchaError(`CAPTCHA required: ${data.message}`);
+      }
 
       if (data.code !== 1) {
         throw new Error(`API Error ${data.code}: ${data.message}`);
@@ -233,6 +247,10 @@ export class BlockmanGOClient {
         userId: number;
       }>;
 
+      if (data.code === 140) {
+        throw new CaptchaError(`CAPTCHA required: ${data.message}`);
+      }
+
       if (data.code !== 1) {
         throw new Error(`Login failed: ${data.message}`);
       }
@@ -305,6 +323,10 @@ export class BlockmanGOClient {
         accessToken: string;
         nickName: string;
       }>;
+
+      if (data.code === 140) {
+        throw new CaptchaError(`CAPTCHA required: ${data.message}`);
+      }
 
       if (data.code !== 1) {
         throw new Error(`Registration failed: ${data.message}`);

@@ -16,6 +16,8 @@ Every request to `gw.sandboxol.com` requires signed headers.
 | `userid` | User ID (authenticated requests) |
 | `access-token` | Session token (authenticated requests) |
 | `userdeviceid` | Device fingerprint |
+| `language` | Language code (required, causes 400 without it) |
+| `userlanguage` | Language code (also required) |
 
 ### Signature Algorithm
 
@@ -58,4 +60,25 @@ Passwords are encrypted before transmission:
 { "code": 1, "message": "SUCCESS", "data": {} }
 ```
 
-Code 1 = success. Code 6 = token expired. Other codes = specific errors.
+Code 1 = success. Code 6 = token expired. Code 140 = CAPTCHA required.
+
+### CAPTCHA Handling
+
+When the server requires CAPTCHA (code 140), the wrapper throws `CaptchaError`:
+
+```typescript
+import { BlockmanGOClient, CaptchaError } from "blockmango-wrapper";
+
+try {
+  await BlockmanGOClient.login("user", "pass");
+} catch (e) {
+  if (e instanceof CaptchaError) {
+    console.log("CAPTCHA required, try again later");
+  }
+}
+```
+
+CAPTCHA is triggered by:
+- Too many login attempts from same IP
+- Suspicious device IDs
+- Server-side rate limiting
