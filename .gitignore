@@ -3,3 +3,7 @@ dist/
 *.tsbuildinfo
 .env
 .env.*
+test/
+tools/accounts.json
+tools/captcha.html
+tools/captcha_ticket.txt
