@@ -1,6 +1,6 @@
 # blockmango-wrapper
 
-[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/bVgjq6)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/bVgjnJAkq6)
 [![npm](https://img.shields.io/npm/v/blockmango-wrapper)](https://www.npmjs.com/package/blockmango-wrapper)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
